@@ -1,8 +1,8 @@
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from utils.dependencies import get_current_user
 from sqlalchemy.orm import Session
 from database.db_postgres import get_db
+from database.database_mongo import task_collection
 
 
 
@@ -14,6 +14,10 @@ def delete_account(
     user = Depends(get_current_user)
 ):
     try:
+        task_collection.delete_many({
+            "user_id": user.id
+        })
+        
         db.delete(user)
         db.commit()
         
