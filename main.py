@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from database.db_postgres import engine
 from models import Base
-from router import auth, delete_account, task_manage
+from router import auth, delete_account, task_manage, category, tags
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -13,8 +13,8 @@ Base.metadata.create_all(bind=engine)
 app.include_router(auth.router)
 app.include_router(delete_account.router)
 app.include_router(task_manage.router)
-
-
+app.include_router(category.router)
+app.include_router(tags.router)
 
 @app.get("/")
 def home():

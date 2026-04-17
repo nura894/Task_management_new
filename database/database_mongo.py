@@ -6,3 +6,5 @@ client = AsyncIOMotorClient(MONGO_URL)
 
 db = client["task_db"]          # database name
 task_collection = db["tasks"]   # collection (like table)
+categories_collection = db["categories"]
+tags_collection = db["tags"]
