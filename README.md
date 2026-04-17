@@ -7,7 +7,6 @@ Backend Developer Intern Assignment – RESTful API with Authentication & Databa
 ## 📌 Overview
 
 This project is a **secure, RESTful Task Management API** that allows users to register, authenticate, and manage their tasks.
-
 It demonstrates:
 
 * Authentication using JWT
@@ -48,14 +47,18 @@ project/
 │── schemas/
 │   ├── user_schema.py
 │   ├── task_schema.py
+│   ├── task_schema.py
+│   ├── category_schema.py
 │
 │── routers/
 │   ├── auth.py
 │   ├── delete_account.py
-    ├── task_manage.py
+│   ├── task_manage.py
+│   ├── task_router.py
+│   ├── category_router.py
 │
 │── utils/
-    ├── config.py
+│   ├── config.py
 │   ├── dependencies.py
 │   ├── security.py
 │
@@ -186,6 +189,43 @@ Authorization: Bearer <your_token>
 }
 ```
 
+### ➤ Category System
+Separate collection for categories
+Tasks must reference existing categories
+Prevents invalid data
+
+
+### ➤ Reminder Scheduler
+Automatically schedules reminder:
+Triggered 1 hour before due_date
+Runs using asyncio.create_task()
+Non-blocking background execution
+
+
+### ➤ Reminder Control
+If task is updated:
+due_date change → reschedule
+status = completed → cancel reminder
+Ensures only one active reminder per task
+
+
+### ➤ Webhook Integration
+When task is marked completed:
+Sends POST request to external service
+Includes:
+task_id
+title
+user_id
+completed_at
+
+
+### ➤ Retry Logic
+Retries webhook up to 3 times
+Uses exponential backoff:
+1s → 2s → 4s
+Improves reliability for network failures
+
+
 ---
 
 ### ➤ Get All Tasks
@@ -217,6 +257,16 @@ Authorization: Bearer <your_token>
 `DELETE /user/tasks/{task_id}`
 
 ---
+
+### ➤ Reminder Flow
+Task created
+   ↓
+calculate delay
+   ↓
+async sleep
+   ↓
+print reminder
+
 
 ## 🔒 Security Features
 
